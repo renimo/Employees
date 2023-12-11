@@ -20,41 +20,42 @@ public class EmployeeService {
         return employeesRepository.findAll();
     }
 
-//}
+    public List<String> getAllEmployeesEmails(){
+        List<Employee> allEmployees = getAllEmployees();  //can i get here just the emails from DB?
+        List<String> allEmployeesEmails = new ArrayList<>();
 
-//    public List<String> getAllEmployeesEmails(){
-//        List<Employee> allEmployees = getAllEmployees();  //can i get here just the emails from DB?
-//        List<String> allEmployeesEmails = new ArrayList<>();
-//
-//        for (Employee emp: allEmployees) {
-//            allEmployeesEmails.add(emp.getEmail());
-//        }
-//
-//        return allEmployeesEmails;
-//    }
-
-//    public Employee getEmployeeFromId(Integer id){
-//        return employeesRepository.findFromId(id);
-//    }
-//
-    public void insertEmployee(List<Employee> employeeList) {//throws IOException {
-//        for (Employee emp: employeeList) {
-//            emp.setSalary(convertUSDToEuro(emp.getSalary()));
-//        }
-//
-//        employeesRepository.saveAll(employeeList);
-//        Notification.sendNotification();
-        return;
+        for (Employee emp: allEmployees) {  //stream
+            allEmployeesEmails.add(emp.getEmail());
+        }
+        System.out.println(allEmployeesEmails);
+        return allEmployeesEmails;
     }
 
-    // If entities are already available in collection in Mongo database, then they will be updated.
+    public Employee getEmployeeFromId(String id){
+        return employeesRepository.findFromId(id);
+    }
+
+    public void insertEmployee(List<Employee> employeeList) {//throws IOException {
+        //to validate not exist before
+//        for (Employee emp: employeeList) {
+////            emp.setSalary(convertUSDToEuro(emp.getSalary()));
+//        }
+
+        employeesRepository.saveAll(employeeList);
+
+        for (Employee employee: employeeList) {
+            SendNotification.sendNotification(); //to send list of new employees
+        }
+    }
+
+    // If entities are already available in collection in MongoDB, then they will be updated.
     // otherwise they will be inserted as new entities
-//    public void updateEmployee(Employee employee){
-//        employeesRepository.save(employee);
-//    }
+    public void updateEmployee(Employee employee){
+        employeesRepository.save(employee);
+    }
 
     public void deleteEmployee(String id) {
-        employeesRepository.deleteById(id.toString());
+        employeesRepository.deleteById(id);
     }
 
 //    public Double convertUSDToEuro(Double salaryOnUSD) throws IOException {

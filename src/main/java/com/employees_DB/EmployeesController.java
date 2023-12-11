@@ -19,47 +19,38 @@ public class EmployeesController {
     @Autowired
     private EmployeeService employeeService;
 
-//                @GetMapping( "allEmployees")
-//                public List<Employee> getAllEmployees(){
-//                    return employeeService.getAllEmployees();
-//                }
-//
-//                @GetMapping( "allEmployeesEmails")
-//                public List<String> getAllEmployeesEmails(){
-//                    return employeeService.getAllEmployeesEmails();
-//                }
+    @GetMapping( "employeeFromId") //@GetMapping("/employees/{id}")
+    public Employee getEmployeesFromId(@RequestParam String id){ //getEmployeeDetails(@PathVariable("id") int id)
+        return employeeService.getEmployeeFromId(id);
+    }
 
+    @GetMapping( "allEmployees")
+    public List<Employee> getAllEmployees(){
+        return employeeService.getAllEmployees();
+    }
 
-//    @GetMapping( "employeeFromId")
-//    public Employee getEmployeesFromId(@RequestParam Integer id){
-//        return employeeService.getEmployeeFromId(id);
-//    }
-
+    @GetMapping( "allEmployeesEmails")
+    public List<String> getAllEmployeesEmails(){
+        return employeeService.getAllEmployeesEmails();
+    }
 
     @PostMapping("insertEmployees")
     public void insertEmployees(@RequestBody List<Employee> employeeList) {//throws IOException {
         employeeService.insertEmployee(employeeList);
-//        System.out.println(getAllEmployeesEmails());
-
-
-
-//        System.out.println(employeeList.get(0));
-//            List<String> lines = Arrays.asList("The third line", "The second line");
-//            Path file = Paths.get("src/Employees.csv");
-//            Files.write(file.toAbsolutePath(), employeeList, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
     }
 
-//    @PutMapping("updateEmployee")
-//    public void updateEmployee(@RequestBody Employee employee){
-//        employeeService.updateEmployee(employee);
-//    }
+    @PostMapping("insertEmployee")
+    public void insertEmployee(@RequestBody Employee employee) {//throws IOException {
+        employeeService.insertEmployee(List.of(employee));
+    }
 
-    //update employees?
+    @PutMapping("updateEmployee")
+    public void updateEmployee(@RequestBody Employee employee){
+        employeeService.updateEmployee(employee);
+    }
 
-    //return the employee or void?
-//
-//    @DeleteMapping("deleteEmployee")
-//    public void deleteEmployee(@RequestParam String id){
-//        employeeService.deleteEmployee(id);
-//    }
+    @DeleteMapping("deleteEmployee")  //http://localhost:8080/employees/deleteEmployee?id=030303149
+    public void deleteEmployee(@RequestParam String id){
+        employeeService.deleteEmployee(id);
+    }
 }
