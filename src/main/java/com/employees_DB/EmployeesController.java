@@ -3,15 +3,7 @@ package com.employees_DB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Arrays;
-import java.nio.file.Paths;
-import java.nio.file.Path;
-//import java.nio.charset.Charset;
-//import java.nio.charset.StandardCharsets;
-//import java.nio.file.StandardOpenOption;
-//import java.nio.file.Files;
 
 @RestController
 @RequestMapping("/employees")
@@ -19,7 +11,8 @@ public class EmployeesController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping( "employeeFromId") //@GetMapping("/employees/{id}")
+    @GetMapping( "employeeFromId")
+    //@GetMapping("/employees/{id}")
     public Employee getEmployeesFromId(@RequestParam String id){ //getEmployeeDetails(@PathVariable("id") int id)
         return employeeService.getEmployeeFromId(id);
     }
@@ -35,7 +28,7 @@ public class EmployeesController {
     }
 
     @PostMapping("insertEmployees")
-    public void insertEmployees(@RequestBody List<Employee> employeeList) {//throws IOException {
+    public void insertEmployees(@RequestBody List<Employee> employeeList) {
         employeeService.insertEmployee(employeeList);
     }
 
@@ -49,7 +42,7 @@ public class EmployeesController {
         employeeService.updateEmployee(employee);
     }
 
-    @DeleteMapping("deleteEmployee")  //http://localhost:8080/employees/deleteEmployee?id=030303149
+    @DeleteMapping("deleteEmployee")      //example-> http://localhost:8080/employees/deleteEmployee?id=030303149
     public void deleteEmployee(@RequestParam String id){
         employeeService.deleteEmployee(id);
     }

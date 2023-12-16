@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @AllArgsConstructor
-@Document("Employees")  //object that belong to MongoDB
+@Document("Employees")
 public class Employee {
 
     @Id
@@ -23,10 +23,15 @@ public class Employee {
 }
 
 
+
+
+
+
+
 //[
 //        {
 //        "id":"030303149",
-//        "firstName":"David",
+//        "firstName":"Renana",
 //        "lastName":"Moses",
 //        "country":"Israel",
 //        "city":"Modiin",

@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class EmployeesDbApplication {
 	public static void main(String[] args) {
-		System.out.println("RENANA");
 		SpringApplication.run(EmployeesDbApplication.class, args);
 	}
 }
