@@ -3,13 +3,20 @@ package com.employees_DB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeesController {
+//    @Autowired
+    private EmployeeService employeeService;//final
+    //to make context class
+
     @Autowired
-    private EmployeeService employeeService;
+    public EmployeesController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @GetMapping( "employeeFromId")
     //@GetMapping("/employees/{id}")
@@ -19,7 +26,7 @@ public class EmployeesController {
 
     @GetMapping( "allEmployees")
     public List<Employee> getAllEmployees(){
-        return employeeService.getAllEmployees();
+        return employeeService.findAllEmployees();
     }
 
     @GetMapping( "allEmployeesEmails")
@@ -28,12 +35,12 @@ public class EmployeesController {
     }
 
     @PostMapping("insertEmployees")
-    public void insertEmployees(@RequestBody List<Employee> employeeList) {
+    public void insertEmployees(@RequestBody List<Employee> employeeList) throws IOException {
         employeeService.insertEmployee(employeeList);
     }
 
     @PostMapping("insertEmployee")
-    public void insertEmployee(@RequestBody Employee employee) {//throws IOException {
+    public void insertEmployee(@RequestBody Employee employee) throws IOException {
         employeeService.insertEmployee(List.of(employee));
     }
 
@@ -47,3 +54,6 @@ public class EmployeesController {
         employeeService.deleteEmployee(id);
     }
 }
+
+
+//http://localhost:8080/employees/insertEmployees

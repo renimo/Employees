@@ -11,6 +11,6 @@ public interface EmployeesRepository extends MongoRepository<Employee,String> { 
 //    List<Employee> findAll(String category);  //the name //findAllByName
 
     @Query(value="{id:'?0'}")
-    Employee findFromId(String id);
+    Employee findFromId(String id); //private final
 
 }

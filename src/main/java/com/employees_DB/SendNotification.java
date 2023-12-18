@@ -8,4 +8,7 @@ public class SendNotification {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getForObject("http://localhost:7000/notification/insertEmployee", String.class);
     }
+
+//    public static void sendNotification(Employee employee) {
+//    }
 }
