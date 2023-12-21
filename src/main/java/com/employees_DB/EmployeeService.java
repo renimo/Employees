@@ -9,17 +9,14 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
-
-//    @Autowired
-    private final EmployeesRepository employeesRepository;
-
-//    @Autowired
+    private final EmployeesRepository employeesRepository; //Dependency Inversion
     private final EmployeesValidator employeesValidator;
 
-    @Autowired
+    @Autowired //need a cons?
     public EmployeeService(EmployeesRepository employeesRepository, EmployeesValidator employeesValidator) {
         this.employeesRepository = employeesRepository;
         this.employeesValidator = employeesValidator;
@@ -29,24 +26,19 @@ public class EmployeeService {
         return employeesRepository.findAll();
     }
 
-    public List<String> getAllEmployeesEmails(){
-        List<Employee> allEmployees = findAllEmployees();  //can i get here just the emails from DB?
-        List<String> allEmployeesEmails = new ArrayList<>();
+    public List<String> findAllEmployeesEmails(){
+        List<Employee> allEmployees = findAllEmployees();
 
-        for (Employee emp: allEmployees) {  //stream
-            allEmployeesEmails.add(emp.getEmail());
-        }
-        System.out.println(allEmployeesEmails);
-        return allEmployeesEmails;
+        return allEmployees.stream().map(Employee::getEmail).collect(Collectors.toList());
     }
 
-    public Employee getEmployeeFromId(String id){
+    public Employee findEmployeeFromId(String id){
         return employeesRepository.findFromId(id);
     }
 
-    public void insertEmployee(List<Employee> employeeList) throws IOException { //change to return employeesList
+    public void insertEmployee(List<Employee> employeeList) throws IOException {
         if(!employeesValidator.validateNotExist(employeeList)){
-            System.out.println("One of the employees in the list already exist");
+            System.out.println("One of the employees in the list already exist.");
         }
         //log this error using a logging framework like SLF4J and Logback
         //Keep in mind that this validation logic may have concurrency issues if multiple requests try to insert the same employee simultaneously.
@@ -57,9 +49,9 @@ public class EmployeeService {
             employeeList.forEach(employee -> employee.setSalary(convertUSDToEuro * employee.getSalary()));
             employeesRepository.saveAll(employeeList);
 
-            for (Employee employee: employeeList) {
-                SendNotification.sendNotification(); //to send list of new employees
-            }
+//            for (Employee employee: employeeList) {
+                SendNotification.sendNotification(); //employeeList); //to send list of new employees /////////////
+//            }
         }
     }
 
@@ -69,11 +61,16 @@ public class EmployeeService {
         employeesRepository.save(employee);
     }
 
-    public void deleteEmployee(String id) { //validate if exist
-        employeesRepository.deleteById(id);
+    public void deleteEmployee(String id) {
+        if(!employeesValidator.validateIdExist(id)){
+            System.out.println("Id is not exist.");
+        }
+        else {
+            employeesRepository.deleteById(id);
+        }
     }
 
-    public Double convertUSDToEuro() throws IOException {  //maybe in another service
+    private Double convertUSDToEuro() throws IOException {  //maybe to do it in a new service
 
         RestTemplate restTemplate = new RestTemplate();
         String ansJson = restTemplate.getForObject("https://v6.exchangerate-api.com/v6/8aa00d65b6b7fa3308a5aeca/pair/USD/EUR", String.class);
@@ -84,7 +81,5 @@ public class EmployeeService {
         String convertUSDToEuro = jsonNode.get("conversion_rate").asText();   //~0.9162   12/16/23
 //        System.out.println("convertUSDToEuro " + convertUSDToEuro);
         return Double.parseDouble(convertUSDToEuro);
-
     }
-
 }

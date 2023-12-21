@@ -9,8 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 public class EmployeesController {
-//    @Autowired
-    private EmployeeService employeeService;//final
+    private final EmployeeService employeeService;
     //to make context class
 
     @Autowired
@@ -21,7 +20,7 @@ public class EmployeesController {
     @GetMapping( "employeeFromId")
     //@GetMapping("/employees/{id}")
     public Employee getEmployeesFromId(@RequestParam String id){ //getEmployeeDetails(@PathVariable("id") int id)
-        return employeeService.getEmployeeFromId(id);
+        return employeeService.findEmployeeFromId(id);
     }
 
     @GetMapping( "allEmployees")
@@ -31,7 +30,7 @@ public class EmployeesController {
 
     @GetMapping( "allEmployeesEmails")
     public List<String> getAllEmployeesEmails(){
-        return employeeService.getAllEmployeesEmails();
+        return employeeService.findAllEmployeesEmails();
     }
 
     @PostMapping("insertEmployees")
@@ -49,7 +48,7 @@ public class EmployeesController {
         employeeService.updateEmployee(employee);
     }
 
-    @DeleteMapping("deleteEmployee")      //example-> http://localhost:8080/employees/deleteEmployee?id=030303149
+    @DeleteMapping("deleteEmployee")      //example-> http://localhost:8080/employees/deleteEmployee?id=030303160
     public void deleteEmployee(@RequestParam String id){
         employeeService.deleteEmployee(id);
     }
